@@ -1,147 +1,328 @@
+/* =========================================================
+   ADVANCED RESPONSIVE PORTFOLIO CSS
+   CSS Grid + Flexbox + CSS Variables + Dark Mode
+   Mobile-first + WCAG-conscious
+========================================================= */
 
-* {
+/* ---------- 1. DESIGN TOKENS ---------- */
+:root {
+    color-scheme: light;
+
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --surface-alt: #eef2f7;
+    --text: #182230;
+    --muted: #5d6978;
+
+    --primary: #17324d;
+    --primary-hover: #0d2438;
+    --accent: #7b2cbf;
+    --focus: #ffbf00;
+
+    --border: #c7d0da;
+    --success: #087443;
+    --error: #a40000;
+
+    --max-width: 1180px;
+    --radius: 14px;
+    --radius-sm: 8px;
+
+    --shadow: 0 8px 25px rgba(23, 50, 77, 0.10);
+    --shadow-hover: 0 16px 35px rgba(23, 50, 77, 0.16);
+
+    --space-1: 0.5rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 3rem;
+    --space-7: 4rem;
+    --space-8: 6rem;
+
+    --transition: 180ms ease;
+}
+
+/* Activate with: <html data-theme="dark"> */
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg: #0b1220;
+    --surface: #111c2e;
+    --surface-alt: #17263b;
+    --text: #f1f5f9;
+    --muted: #c5cfdb;
+
+    --primary: #72a9dc;
+    --primary-hover: #9bc5ee;
+    --accent: #b78cff;
+    --focus: #ffd166;
+
+    --border: #3a4a60;
+
+    --shadow: 0 8px 25px rgba(0, 0, 0, 0.28);
+    --shadow-hover: 0 16px 35px rgba(0, 0, 0, 0.40);
+}
+
+/* ---------- 2. RESET ---------- */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 1rem;
 }
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    min-width: 320px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     line-height: 1.6;
-    background: #f4f4f4;
-    color: #222;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top right, rgba(123, 44, 191, 0.07), transparent 30rem),
+        var(--bg);
+    text-rendering: optimizeLegibility;
+    transition: background-color var(--transition), color var(--transition);
 }
 
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: var(--primary-hover);
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    text-decoration-thickness: 2px;
+}
+
+::selection {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ---------- 3. ACCESSIBILITY ---------- */
 .skip-link {
-    position: absolute;
-    left: -9999px;
-    top: 10px;
+    position: fixed;
+    left: 1rem;
+    top: -100px;
     z-index: 1000;
-    padding: 10px 14px;
+    padding: 0.75rem 1rem;
     background: #000;
     color: #fff;
+    border: 2px solid #fff;
+    border-radius: var(--radius-sm);
     text-decoration: none;
 }
 
 .skip-link:focus {
-    left: 10px;
-}
-
-header {
-    text-align: center;
-    padding: 40px 20px 25px;
-    background: #fff;
-}
-
-.profile-photo {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-h1, h2, h3 {
-    line-height: 1.25;
-}
-
-header h1 {
-    margin-bottom: 8px;
-}
-
-nav {
-    background: #000;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px 28px;
-    margin: 0;
-    padding: 12px 20px;
-}
-
-nav a {
-    display: inline-block;
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 6px;
-}
-
-nav a:hover,
-nav a:focus-visible {
-    text-decoration: underline;
+    top: 1rem;
 }
 
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-    outline: 3px solid #7b2cbf;
+    outline: 3px solid var(--focus);
     outline-offset: 3px;
 }
 
-main {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
+/* ---------- 4. HEADER ---------- */
+header {
+    text-align: center;
+    padding: clamp(2rem, 6vw, 3.5rem) 1rem 1.75rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
 }
 
+.profile-photo {
+    width: clamp(150px, 35vw, 200px);
+    height: clamp(150px, 35vw, 200px);
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    border: 5px solid var(--surface);
+    box-shadow: 0 0 0 3px var(--accent), var(--shadow);
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+}
+
+header h1 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(2rem, 6vw, 4rem);
+}
+
+header p {
+    max-width: 65ch;
+    margin: 0 auto;
+    color: var(--muted);
+}
+
+/* ---------- 5. NAVIGATION / FLEXBOX ---------- */
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--primary);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.12);
+}
+
+nav ul {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+}
+
+nav li {
+    flex: 0 1 auto;
+}
+
+nav a {
+    display: block;
+    min-height: 44px;
+    padding: 0.65rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    text-align: center;
+    border-radius: var(--radius-sm);
+}
+
+nav a:hover,
+nav a:focus-visible {
+    background: rgba(255, 255, 255, 0.14);
+    text-decoration: none;
+}
+
+/* ---------- 6. MAIN CONTAINER ---------- */
+main {
+    width: min(100% - 2rem, var(--max-width));
+    margin-inline: auto;
+    padding: 1rem 0 3rem;
+}
+
+/* ---------- 7. CONTENT CARDS ---------- */
 section,
 article {
-    background: #fff;
-    margin: 20px 0;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: var(--surface);
+    margin: 1rem 0;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition),
+        background-color var(--transition),
+        border-color var(--transition);
+}
+
+section:hover,
+article:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
 }
 
 h2 {
-    color: #333;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 8px;
+    margin-top: 0;
+    color: var(--text);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.65rem;
+}
+
+h3 {
+    font-size: clamp(1.15rem, 2.5vw, 1.4rem);
 }
 
 ul {
-    padding-left: 25px;
+    padding-left: 1.5rem;
 }
 
+/* ---------- 8. CSS GRID ---------- */
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
 }
 
 .cards article {
     margin: 0;
+    height: 100%;
 }
 
+.cards article h3 {
+    color: var(--primary-hover);
+}
+
+/* ---------- 9. FORMS ---------- */
 form {
-    max-width: 700px;
+    width: 100%;
+    max-width: 760px;
 }
 
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 1.25rem;
 }
 
 label {
     display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
 }
 
 input,
 textarea {
     width: 100%;
-    padding: 11px;
-    border: 2px solid #777;
-    border-radius: 5px;
-    font: inherit;
+    min-height: 46px;
+    padding: 0.75rem 0.9rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    background: var(--bg);
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition),
+        background-color var(--transition);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--muted);
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.15);
+    outline: none;
 }
 
 textarea {
@@ -150,59 +331,167 @@ textarea {
 }
 
 button {
-    padding: 12px 22px;
-    border: 2px solid #000;
-    border-radius: 5px;
-    background: #000;
+    min-height: 46px;
+    padding: 0.75rem 1.4rem;
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-sm);
+    background: var(--primary);
     color: #fff;
-    font: inherit;
-    font-weight: bold;
-    cursor: pointer;
+    font-weight: 700;
+    transition:
+        transform var(--transition),
+        background-color var(--transition),
+        box-shadow var(--transition);
 }
 
 button:hover {
-    background: #333;
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
 }
 
+button:active {
+    transform: translateY(0);
+}
+
+/* ---------- 10. CONTACT ---------- */
 address {
     font-style: normal;
 }
 
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+/* ---------- 11. FOOTER ---------- */
 footer {
-    text-align: center;
-    padding: 20px;
-    background: #000;
+    margin-top: 2rem;
+    padding: 2rem 1rem;
+    background: var(--primary);
     color: #fff;
-    margin-top: 30px;
+    text-align: center;
 }
 
 footer a {
     color: #fff;
 }
 
-@media (max-width: 600px) {
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .profile-photo {
-        width: 160px;
-        height: 160px;
-    }
-
+/* ---------- 12. TABLET ---------- */
+@media (min-width: 600px) {
     main {
-        padding: 12px;
+        width: min(100% - 3rem, var(--max-width));
+    }
+
+    nav ul {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.4rem 1rem;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+    }
+
+    .contact-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+}
+
+/* ---------- 13. DESKTOP ---------- */
+@media (min-width: 900px) {
+    main {
+        width: min(100% - 4rem, var(--max-width));
+        padding-top: 2rem;
+    }
+
+    nav ul {
+        justify-content: flex-end;
+        padding-inline: 2rem;
+    }
+
+    .cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     section,
     article {
-        padding: 20px;
+        padding: 2.25rem;
     }
 }
 
+/* ---------- 14. LARGE DESKTOP ---------- */
+@media (min-width: 1200px) {
+    header {
+        padding-top: 4rem;
+    }
+
+    .cards {
+        gap: 2rem;
+    }
+}
+
+/* ---------- 15. DARK MODE DETAILS ---------- */
+[data-theme="dark"] header,
+[data-theme="dark"] section,
+[data-theme="dark"] article {
+    background: var(--surface);
+}
+
+[data-theme="dark"] nav {
+    background: #07101d;
+}
+
+[data-theme="dark"] footer {
+    background: #07101d;
+}
+
+/* ---------- 16. RESPONSIVE SAFETY ---------- */
+.cards > *,
+.contact-grid > *,
+form {
+    min-width: 0;
+}
+
+/* ---------- 17. REDUCED MOTION ---------- */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ---------- 18. PRINT ---------- */
+@media print {
+    nav,
+    .skip-link {
+        display: none !important;
+    }
+
+    body,
+    header,
+    section,
+    article,
+    footer {
+        color: #000;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    section,
+    article {
+        break-inside: avoid;
     }
 }
